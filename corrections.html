@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+   <title>Corrections to TLA+ Video Course</title>
+  <STYLE type="text/css">
+   body { background-color: #e4e4e4; max-width:700px;
+            font-family:Calibri,Trebuchet MS,Verdana,sans-serif;
+           font-size:18px; margin-left:15px}
+   H1 {margin-bottom:0px}
+   H2   {line-height:45px; margin-bottom:0px; text-align: left; font-size:26px;
+       color:#000000}
+   H3   {line-height:10px; margin-bottom:12px; margin-top:20px; 
+         text-align: left}
+   UL    {margin-top:-10px}
+   LI {margin-top:15px}
+   td {padding-left:-5px; padding-right:0px}
+   code {font-size:17px; margin:2px }
+ </STYLE>
+</HEAD>
+<body>
+<h1>Corrections to the TLA+ Video Course</h1>
+<i>Last modified 13 August 2021</i>
+<hr>
+
+<p>
+This page lists corrections for all known problems with
+the content of 
+  <a href="../videos.html">The TLA+ Video Course</a>.&nbsp; 
+Problems in the videos include errors, misleading or hard to
+understand parts, and obsolete information.&nbsp; They are identified
+by minutes:seconds into the video where the problem begins.&nbsp;
+
+Not addressed are problems with video quality, trouble downloading the
+videos, or bad acting.
+</p>
+
+<p style="margin-top:30px"></p>
+
+
+<h3><A  name="lecture1">Lecture 1. Introduction to TLA<sup>+</sup></a></h3>
+
+<!-- Note use of <font color="#e4e4e4">1</font> to add a 1-digit space
+     to the time to maintain alignment.   
+-->
+<table>
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;13:16&nbsp;&nbsp;
+</td>
+<td>
+The word <q>possible</q> should be followed by <q>behaviors</q>.
+</td>
+</tr>
+</table>
+
+<h3><A  name="lecture3">Lecture 3. Two-Phase Commit</a></h3>
+
+<!-- Note use of <font color="#e4e4e4">1</font> to add a 1-digit space
+     to the time to maintain alignment.   
+-->
+<table>
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;<font color="#e4e4e4">1</font>0:34&nbsp;&nbsp;
+</td>
+<td>
+
+The TLA+ web site has been completely changed since the video was
+made.&nbsp; The URL of the home page is the same, but resources for
+learning about TLA+ are found by clicking on <b>Learning TLA+</b>,
+which takes you to
+  <a href="https://lamport.azurewebsites.net/tla/learning.html">this
+    page</a>.&nbsp;
+The <i>Summary of TLA+</i> is reached from a link in the text describing by the
+<i>The TLA+ Book</i> that takes you
+  <a href="https://lamport.azurewebsites.net/tla/summary-standalone.pdf">here</a>.&nbsp;
+
+The link to <i>The TLA+ Google Group</i> is now on the <i>Learning</I> page;
+it takes you
+  <a href="https://groups.google.com/forum/?fromgroups#!forum/tlaplus">here</a>.
+
+
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;<font color="#e4e4e4">1</font>1:56&nbsp;&nbsp;
+</td>
+<td>
+You do not have to install Java.&nbsp;  
+Installing the Toolbox now automatically installs Java.
+</td>
+</tr>
+
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;<font color="#e4e4e4">1</font>2:34&nbsp;&nbsp;
+</td>
+<td>
+The section to check if something goes wrong is now called
+<i>If You Find a Problem</i>.
+</td>
+</tr>
+
+</table>
+
+<h3><A  name="lecture4">Lecture 4. Two-Phase Commit</a></h3>
+
+<!-- Note use of <font color="#e4e4e4">1</font> to add a 1-digit space
+     to the time to maintain alignment.   
+-->
+<table>
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;15:22&nbsp;&nbsp;
+</td>
+<td>
+In the definition of <code>BigToSmall</code>, the formula
+&nbsp;<code>big' = small - (3 - big)</code>&nbsp; should be changed to
+&nbsp;<code>big' = big - (3 - small)</code>&nbsp;.
+</td>
+</tr>
+<!-------
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;15:50&nbsp;&nbsp;
+</td>
+<td>
+Instead of <code>TPnit</code>, the initial predicate should be 
+<code>TPInit</code>.
+</td>
+</tr>
+---->
+</table>
+
+<h3><A  name="lecture5">Lecture 5. Transaction Commit</a></h3>
+
+<!-- Note use of <font color="#e4e4e4">1</font> to add a 1-digit space
+     to the time to maintain alignment.   
+-->
+<table>
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;<font color="#e4e4e4">1</font>3:07&nbsp;&nbsp;
+</td>
+<td>
+Ignore the spurious &copy; symbol.
+</td>
+</tr>
+
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;18:21&nbsp;&nbsp;
+</td>
+<td>
+
+The Toolbox's pages that specify a model have
+changed since the video was made.&nbsp; If it's no longer easy to find
+something on those pages from the instructions in the video, a correction
+will lead you to it.
+
+</td>
+</tr>
+
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;20:28&nbsp;&nbsp;
+</td>
+<td>
+
+The <i>Coverage</i> section of the <i>Model Checking Results</i> page
+has been replaced by a section that is more helpful for beginning
+users.&nbsp; A new profiling feature provides much more information
+than the <i>Coverage</i> section did.&nbsp; Profiling is described in
+the <i>Features</i> section of the <i>TLC Options Page</i> help page.
+
+</td>
+</tr>
+
+</table>
+
+<h3><A  name="lecture6">Lecture 6. Two-Phase Commit</a></h3>
+
+<!-- Note use of <font color="#e4e4e4">1</font> to add a 1-digit space
+     to the time to maintain alignment.   
+-->
+<table>
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;<font color="#e4e4e4">1</font>4:20&nbsp;&nbsp;
+</td>
+<td>
+Instead of just creating a new module
+named <i>TwoPhase</i>, you should create a new spec by that name, which
+will create that module.
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;15:50&nbsp;&nbsp;
+</td>
+<td>
+Instead of <code>TPnit</code>, the initial predicate should be 
+<code>TPInit</code>.
+</td>
+</tr>
+</table>
+
+<h3><A  name="lecture7">Lecture 7. Paxos Commit</a></h3>
+
+<!-- Note use of <font color="#e4e4e4">1</font> to add a 1-digit space
+     to the time to maintain alignment.   
+-->
+<table>
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;<font color="#e4e4e4">1</font>3:42&nbsp;&nbsp;
+</td>
+<td>
+The word <q style="margin:3px">smallest</q> in both the written and the spoken
+text should be <q style="margin:3px">largest</q>.
+</td>
+</table>
+
+<h3><A  name="lecture8-1">Lecture 8. Implementation</a></h3>
+<h4 style="margin-top:0px;margin-bottom:5px">Part 1: Preliminaries</h4>
+<!-- Note use of <font color="#e4e4e4">1</font> to add a 1-digit space
+     to the time to maintain alignment.   
+-->
+<table>
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;<font color="#e4e4e4">1</font>3:58&nbsp;&nbsp;
+</td>
+
+<td>The  term <q>module-complete</q> is used here and occasionally
+through 5:08 to mean <q>module-closed</q>.
+</td>
+
+</tr>
+
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;<font color="#e4e4e4">1</font>7:11&nbsp;&nbsp;
+</td>
+<td>
+<q>state expression</q> should be <q>action expression</q> in
+<q>A state expression has a value on a step</q>.
+</td>
+</tr>
+</table>
+
+<h3><A  name="lecture9-2">Lecture 9. The Alternating Bit Protocol</a></h3>
+<h4 style="margin-top:0px;margin-bottom:5px">Part 2: The Protocol</h4>
+<!-- Note use of <font color="#e4e4e4">1</font> to add a 1-digit space
+     to the time to maintain alignment.   
+-->
+<table>
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;<font color="#e4e4e4">1</font>7:28&nbsp;&nbsp;
+</td>
+<td>
+
+The <i>Advanced Options</i> page has been eliminated.&nbsp; The
+<i>State Constraint</i> is now specified on the <i>Spec Options</I>
+page, which is reached by clicking <b>Additional Spec Options</b> on
+the model's <i>Model Overview</i> page.
+
+</td>
+</tr>
+</table>
+
+<h3><A  name="lecture10-1">Lecture 10. Implementation with Refinement</a></h3>
+<h4 style="margin-top:0px;margin-bottom:5px">Part 1: Preliminaries</h4>
+<!-- Note use of <font color="#e4e4e4">1</font> to add a 1-digit space
+     to the time to maintain alignment.   
+-->
+<table>
+<tr>
+<td style="vertical-align:top">
+&nbsp;&nbsp;14:48&nbsp;&nbsp;
+</td>
+<td>
+
+The formula &nbsp;<code>(AtoB2 < 4) 
+<font size=+2>&and;</font> (BtoA2 < 4)</code>&nbsp; should be<br>
+<code>(Len(AtoB2) < 4) <font size=+2>&and;</font> (Len(BtoA2) < 4)</code>&nbsp;.
+</td>
+</tr>
+</table>
+
+
+
+</body> </HTML>

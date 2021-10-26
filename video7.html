@@ -1,0 +1,658 @@
+<!-- THIS FILE BEGAN AS A COPY OF video/video6.html.
+It has been transformed into the true html file for the pcommit video.
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<!--************************************************************************
+* The following imported JavaScript code is involved in copying text into  *
+* the copy buffer and was obtained from                                    *
+*                                                                          *
+*    https://clipboardjs.com/                                              *
+*                                                                          *
+* Note that the directory /dist that contains the clipboard.min.js file    *
+* must be moved to the right place and the src address corrected.          *
+*************************************************************************-->
+<script  src="dist/clipboard.min.js">
+</script>
+
+
+<script>
+/***************************************************************************
+*                     DATA FOR THE LECTURE                                 *
+*                                                                          *
+* The following data customizes the page for a particular video.           *
+***************************************************************************/
+
+/***************************************************************************
+* The name of the lecture.                                                 *
+***************************************************************************/
+var HEADING = "Paxos Commit" ;
+
+/***************************************************************************
+* Table of Contents                                                        *
+*                                                                          *
+* Specified by an array, each element of which is a two-element array A    *
+* with A[0] the name of a section and A[1] the time in seconds at which    *
+* the section of the video begins.                                         *
+***************************************************************************/
+var tocData = 
+   [["Prologue", 5],
+    ["The Algorithm", 41],
+    ["The Specification", 191], 
+    ["Checking the Spec",  843],
+    ["Epilogue", 1153.5]
+   ] ;
+
+/***************************************************************************
+* Items Displayed at Specified Times                                       *
+*                                                                          *
+* An array that specifies when items are to be displayed in the Bottom     *
+* Section of the page.  Each element of the array is 3-element array A     *
+* where A[0] is the id of the item, which is to be displayed from time     *
+* A[1] through A[2] (in seconds) of the video.                             *
+*                                                                          *
+* The the same id should not appear twice in the ids the elements of       *
+* timingData, and each of those ids should be the same as the id of one    *
+* of the <div> elements in in the Bottom Section of the page, which are    *
+* children the <div> element with id "afterVideo".                         *
+*                                                                          *
+* Note: Putting something at the very end isn't a great idea because on    *
+* IE, if the user seeks to the end of the video, IE acts as if it's at     *
+* the beginning and doesn't display something that comes at the end.       *
+***************************************************************************/
+var timingData = 
+  [["begin-title", 0, 4],
+   ["download-spec", 175, 178.5],
+   ["end-title",    1180,   2000]
+  ] ;
+
+</script>
+<script src=tlavideo.js> </script>
+
+
+<title id="titleId"></title>  <!-- title set by createHeading() -->
+
+<!-- The following loads the style sheet for the html files of the videos -->
+<link rel="stylesheet" type="text/css" href="tlastyles.css">
+</head>
+
+<body onresize="getVideoMag()"> 
+
+
+<!--************************************************************************
+* The body consists of the following sections:                             *
+*   - The heading section.                                                 *
+*   - The video section.                                                   *
+*   - The bottom section.                                                  *
+*************************************************************************-->
+
+<!--************************************************************************
+* The Heading Section                                                      *
+*                                                                          *
+* It consists of a single <div> element with id "headingId".  It contains  *
+* the name of the lecture.   This section is made invisible when the       *
+* video is in normal playing mode - that is, with videoState = "playing"   *
+* and timedItemDue = "false".                                              *
+*************************************************************************-->
+<div id="headingId" style="display:block">
+   <!-- The lecture name. -->
+   <div style="float:left;width:335px"> 
+   <H1 id="h1Id" style="margin-top:0em;margin-bottom:.5em">
+   </H1>
+   </div>
+
+   <script> createHeading() </script>
+</div>
+
+<!--************************************************************************
+* The Video Section                                                        *
+*                                                                          *
+* This is a <div> item containing two subitems: a <video> item that        *
+* displays the video and a <div> item that contains the following items:   *
+*                                                                          *
+*    - The controls for the video's playing size.                          *
+*    - Controls for skipping backwards and forwards in the video.          *
+*************************************************************************-->
+<div style="display:block;clear:left">
+
+   <!--*********************************************************************
+   * The <video> element.                                                  *
+   **********************************************************************-->
+   <video  onpause="pauseEvent()" 
+           onplay="playEvent()"
+           onfocus="videoGetsFocus()"
+           width=450
+           height=256
+           controls 
+           preload = "auto"
+           id="videoId">
+
+      <!--********************************************************************
+      * The src field of the following <source> tag is the URL of the video. *
+      *********************************************************************-->
+<!-- Here is the local copy of the video. 
+      <source src=  "video7.mp4">
+--> 
+
+
+<!-- Here is the copy of the video on Channel 9 
+   <source 
+src="https://sec.ch9.ms/ch9/1466/1de5477f-a3fc-4e08-934d-60b65a411466/video7_mid.mp4">
+-->
+
+<!-- Here is new Channel 9 copy provided by Golnaz Alibeigi -->
+  <source 
+src="https://docs.microsoft.com/video/media/0f73977b-33b5-4cc8-81bb-e9cf45b413f3/video7_mid.mp4">
+
+       Your browser cannot display this tutorial because it does not 
+       support the video HTML tag.
+   </video> 
+
+   <!--*********************************************************************
+   * A <div> containing items displayed on a line below the video.         *
+   *                                                                       *
+   * One possibility is to remove the controls from the video itself and   *
+   * replace them with the items displayed here plus some other controls.  *
+   * The controls could also be moved to be on top of the video, and to    *
+   * be made visible for a few seconds when the mouse is moved over (and   *
+   * perhaps out of) the video.  This would make it possible to prevent    *
+   * the user from putting the video into full-screen mode.                *
+   **********************************************************************-->
+   <div id="below-video">
+     <!--*******************************************************************
+     * A span for showing the controls for skipping forward and back in    *
+     * the video and the "Speed", "Contents" and "How to View" buttons.    *
+     * It is created by a tlavideo.jss function.                           *
+     ********************************************************************-->
+   </div>
+</div>
+
+<!--************************************************************************
+* The Bottom Section                                                       *
+*                                                                          *
+* A <div> HTML element with id "afterVideo".  It normally contains the     *
+* table of contents when the video is not in normal playing mode.          *
+* However, at certain parts of the video, it will be replaced by material  *
+* relevant to that part.  That material will consist of a sequence of      *
+* <div> elements, identified by their ids.                                 *
+*                                                                          *
+* The sequence of <div> elements consists of one with id "tocId" followed  *
+* by a sequence of elements whose ids are in 1-1 correspondence with the   *
+* ids in timingData.                                                       *
+*************************************************************************-->
+<div id="afterVideo" style="display:block">
+
+   <!--*********************************************************************
+   * A <div> element containing the table of contents, which is created    *
+   * dynamically by the createContents JavaScript function                 *
+   **********************************************************************-->
+   <div id="tocId" style="float:left"></div>  
+     <script> createContents("tocId", tocData) ; </script>
+   </div>
+
+   <div id="rightBottom" style="display:block" >
+
+    <!--********************************************************************
+    * Next comes the sequence of items that are to appear, with the video  *
+    * minimized, at certain points in the video.  The timingData variable  *
+    * specifies at what point in the video they appear.                    *
+    *********************************************************************--> 
+
+   <!--*********************************************************************
+   * This is the call-out to appear at the beginning of the video.         *
+   **********************************************************************-->
+    <div id = "begin-title" style="float:left">
+      <div style = 
+           "float:left;margin-left:-20px;font-size:20px;font-family:Calibri">
+      <h3 class="contents">Lecture 7</h3>
+       <p style="margin-left:2em;margin-top:-1em;width:15em">   
+
+        This web page was written on:<br> 
+         &nbsp;&nbsp;30 August 2021<BR><BR>
+        The video was produced on:<br> 
+         &nbsp;&nbsp;12 August 2017 
+     </p>
+      </div>
+     <div id = "item0a" style = "float:left;margin-left:-4em">
+           <script> createContents("item0a", tocData) ; 
+          </script>
+      </div>
+         </div>
+
+    <!--********************************************************************
+    * The "What's wrong with first FillSmall definition" call-out.         *
+    *********************************************************************-->
+<!--
+     <div id = "whats-wrong" style="float:left">
+      <div style = 
+           "float:left;margin-left:30px;font-size:30px;font-family:Calibri">
+        <p>
+        Type a space to stop the video.
+        </p>
+      </div>
+    </div>
+-->
+
+    <!--********************************************************************
+    * The "Download Spec" call-out.                                        *
+    *********************************************************************-->
+     <div id = "download-spec" style="float:left">
+      <div style = 
+           "float:left;margin-top:-5px;margin-left:20px;font-size:25px;font-family:Calibri">
+        <p>
+        Stop the video and right-click on the <br>following links
+        to download the files:<br>
+         &nbsp;&nbsp;&nbsp;- 
+          <A href="PaxosCommit.tla">PaxosCommit. tla</a><br>
+         &nbsp;&nbsp;&nbsp;- 
+           <A href="consensus-on-transaction-commit.pdf">Consensus 
+             on Transaction Commit</a>
+        </p>
+      </div>
+    </div>
+
+
+    <!--********************************************************************
+    * The "Copy Spec" call-out.                                            *
+    *********************************************************************-->
+<!--
+     <div id = "copy-spec" style="float:left; margin-top:20px"> 
+      <font style="font-size:17px;font-family:sans-serif"> 
+        <div style="width:420px;float:left;margin-left:25px">
+           Copy the following tiny text, either by
+        clicking on the <code>Copy</code>
+   button below it, or by your usual method of copying
+        text.&nbsp;  
+
+           <div style="padding-left:5em;padding-top:.5em">
+<pre class="copyText" id="bar">
+(***************************************************************************)
+(* This specification is discussed in "Paxos Commit", Lecture 6 of the     *)
+(* TLA+ Video Course.                                                      *)
+(*                                                                         *)
+(* This module specifies the Paxos Commit algorithm.  We specify only      *)
+(* safety properties, not liveness properties.  We simplify the            *)
+(* specification in the following ways.                                    *)
+(*                                                                         *)
+(*  - As in the specification of module TwoPhase, and for the same         *)
+(*    reasons, we let the variable msgs be the set of all messages that    *)
+(*    have ever been sent.  If a message is sent to a set of recipients,   *)
+(*    only one copy of the message appears in msgs.                        *)
+(*                                                                         *)
+(*  - We do not explicitly model the receipt of messages.  If an           *)
+(*    operation can be performed when a process has received a certain set *)
+(*    of messages, then the operation is represented by an action that is  *)
+(*    enabled when those messages are in the set msgs of sent messages.    *)
+(*    (We are specifying only safety properties, which assert what events  *)
+(*    can occur, and the operation can occur if the messages that enable   *)
+(*    it have been sent.)                                                  *)
+(*                                                                         *)
+(*  -  We do not model leader selection.  We define actions that the       *)
+(*    current leader may perform, but do not specify who performs them.    *)
+(*                                                                         *)
+(* As in the specification of Two-Phase commit in module TwoPhase, we have *)
+(* RMs spontaneously issue Prepared messages and we ignore Prepare         *)
+(* messages.                                                               *)
+(***************************************************************************)
+EXTENDS Integers
+
+Maximum(S) == 
+  (*************************************************************************)
+  (* If S is a set of numbers, then this define Maximum(S) to be the       *)
+  (* maximum of those numbers, or -1 if S is empty.                        *)
+  (*************************************************************************)
+  IF S = {} THEN -1
+            ELSE CHOOSE n \in S : \A m \in S : n \geq m
+
+CONSTANT RM,             \* The set of resource managers.
+         Acceptor,       \* The set of acceptors.
+         Majority,       \* The set of majorities of acceptors
+         Ballot          \* The set of ballot numbers
+
+(***************************************************************************)
+(* We assume the following properties of the declared constants.           *)
+(***************************************************************************)
+ASSUME  
+  /\ Ballot \subseteq Nat
+  /\ 0 \in Ballot
+  /\ Majority \subseteq SUBSET Acceptor
+  /\ \A MS1, MS2 \in Majority : MS1 \cap MS2 # {}
+       (********************************************************************)
+       (* All we assume about the set Majority of majorities is that any   *)
+       (* two majorities have non-empty intersection.                      *)
+       (********************************************************************)
+       
+Messages ==
+  (*************************************************************************)
+  (* The set of all possible messages.  There are messages of type         *)
+  (* "Commit" and "Abort" to announce the decision, as well as messages    *)
+  (* for each phase of each instance of ins of the Paxos consensus         *)
+  (* algorithm.  The acc field indicates the sender of a message from an   *)
+  (* acceptor to the leader; messages from a leader are broadcast to all   *)
+  (* acceptors.                                                            *)
+  (*************************************************************************)
+  [type : {"phase1a"}, ins : RM, bal : Ballot \ {0}] 
+      \cup
+  [type : {"phase1b"}, ins : RM, mbal : Ballot, bal : Ballot \cup {-1},
+   val : {"prepared", "aborted", "none"}, acc : Acceptor] 
+      \cup
+  [type : {"phase2a"}, ins : RM, bal : Ballot, val : {"prepared", "aborted"}]
+      \cup                              
+  [type : {"phase2b"}, acc : Acceptor, ins : RM, bal : Ballot,  
+   val : {"prepared", "aborted"}] 
+      \cup
+  [type : {"Commit", "Abort"}]
+-----------------------------------------------------------------------------
+VARIABLES
+  rmState,  \* rmState[r] is the state of resource manager r.
+  aState,   \* aState[ins][ac] is the state of acceptor ac for instance 
+            \* ins of the Paxos algorithm. 
+  msgs      \* The set of all messages ever sent.
+
+PCTypeOK ==  
+  (*************************************************************************)
+  (* The type-correctness invariant.  Each acceptor maintains the values   *)
+  (* mbal, bal, and val for each instance of the Paxos consensus           *)
+  (* algorithm.                                                            *)
+  (*************************************************************************)
+  /\ rmState \in [RM -> {"working", "prepared", "committed", "aborted"}]
+  /\ aState  \in [RM -> [Acceptor -> [mbal : Ballot,
+                                      bal  : Ballot \cup {-1},
+                                      val  : {"prepared", "aborted", "none"}]]]
+  /\ msgs \subseteq Messages
+
+PCInit ==  \* The initial predicate.
+  /\ rmState = [r \in RM |-> "working"]
+  /\ aState  = [r \in RM |-> 
+                 [ac \in Acceptor 
+                    |-> [mbal |-> 0, bal  |-> -1, val  |-> "none"]]]
+  /\ msgs = {}
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(*                                THE ACTIONS                              *)
+(***************************************************************************)
+Send(m) == msgs' = msgs \cup {m}
+  (*************************************************************************)
+  (* An action expression that describes the sending of message m.         *)
+  (*************************************************************************)
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(*                               RM ACTIONS                                *)
+(***************************************************************************)
+RMPrepare(r) == 
+  (*************************************************************************)
+  (* Resource manager r prepares by sending a phase 2a message for ballot  *)
+  (* number 0 with value "prepared".                                       *)
+  (*************************************************************************)
+  /\ rmState[r] = "working"
+  /\ rmState' = [rmState EXCEPT ![r] = "prepared"]
+  /\ Send([type |-> "phase2a", ins |-> r, bal |-> 0, val |-> "prepared"])
+  /\ UNCHANGED aState
+  
+RMChooseToAbort(r) ==
+  (*************************************************************************)
+  (* Resource manager r spontaneously decides to abort.  It may (but need  *)
+  (* not) send a phase 2a message for ballot number 0 with value           *)
+  (* "aborted".                                                            *)
+  (*************************************************************************)
+  /\ rmState[r] = "working"
+  /\ rmState' = [rmState EXCEPT ![r] = "aborted"]
+  /\ Send([type |-> "phase2a", ins |-> r, bal |-> 0, val |-> "aborted"])
+  /\ UNCHANGED aState
+
+RMRcvCommitMsg(r) ==
+  (*************************************************************************)
+  (* Resource manager r is told by the leader to commit.  When this action *)
+  (* is enabled, rmState[r] must equal either "prepared" or "committed".   *)
+  (* In the latter case, the action leaves the state unchanged (it is a    *)
+  (* ``stuttering step'').                                                 *)
+  (*************************************************************************)
+  /\ [type |-> "Commit"] \in msgs
+  /\ rmState' = [rmState EXCEPT ![r] = "committed"]
+  /\ UNCHANGED <<aState, msgs>>
+
+RMRcvAbortMsg(r) ==
+  (*************************************************************************)
+  (* Resource manager r is told by the leader to abort.  It could be in    *)
+  (* any state except "committed".                                         *)
+  (*************************************************************************)
+  /\ [type |-> "Abort"] \in msgs
+  /\ rmState' = [rmState EXCEPT ![r] = "aborted"]
+  /\ UNCHANGED <<aState, msgs>>
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(*                            LEADER ACTIONS                               *)
+(*                                                                         *)
+(* The following actions are performed by any process that believes itself *)
+(* to be the current leader.  Since leader selection is not assumed to be  *)
+(* reliable, multiple processes could simultaneously consider themselves   *)
+(* to be the leader.                                                       *)
+(***************************************************************************)
+Phase1a(bal, r) ==
+  (*************************************************************************)
+  (* If the leader times out without learning that a decision has been     *)
+  (* reached on resource manager r's prepare/abort decision, it can        *)
+  (* perform this action to initiate a new ballot bal.  (Sending duplicate *)
+  (* phase 1a messages is harmless.)                                       *)
+  (*************************************************************************)
+  /\ Send([type |-> "phase1a", ins |-> r, bal |-> bal])
+  /\ UNCHANGED <<rmState, aState>>
+
+Phase2a(bal, r) ==
+  (*************************************************************************)
+  (* The action in which a leader sends a phase 2a message with ballot     *)
+  (* bal > 0 in instance r, if it has received phase 1b messages for       *)
+  (* ballot number bal from a majority of acceptors.  If the leader        *)
+  (* received a phase 1b message from some acceptor that had sent a phase  *)
+  (* 2b message for this instance, then maxbal \geq 0 and the value val    *)
+  (* the leader sends is determined by the phase 1b messages.  (If         *)
+  (* val = "prepared", then r must have prepared.) Otherwise, maxbal = -1  *)
+  (* and the leader sends the value "aborted".                             *)
+  (*                                                                       *)
+  (* The first conjunct asserts that the action is disabled if any commit  *)
+  (* leader has already sent a phase 2a message with ballot number bal.    *)
+  (* In practice, this is implemented by having ballot numbers partitioned *)
+  (* among potential leaders, and having a leader record in stable storage *)
+  (* the largest ballot number for which it sent a phase 2a message.       *)
+  (*************************************************************************)
+  /\ ~\E m \in msgs : /\ m.type = "phase2a"
+                      /\ m.bal = bal
+                      /\ m.ins = r
+  /\ \E MS \in Majority :    
+        LET mset == {m \in msgs : /\ m.type = "phase1b"
+                                  /\ m.ins  = r
+                                  /\ m.mbal = bal 
+                                  /\ m.acc  \in MS}
+            maxbal == Maximum({m.bal : m \in mset})
+            val == IF maxbal = -1 
+                     THEN "aborted"
+                     ELSE (CHOOSE m \in mset : m.bal = maxbal).val
+        IN  /\ \A ac \in MS : \E m \in mset : m.acc = ac
+            /\ Send([type |-> "phase2a", ins |-> r, bal |-> bal, val |-> val])
+  /\ UNCHANGED <<rmState, aState>>
+
+PCDecide == 
+  (*************************************************************************)
+  (* A leader can decide that Paxos Commit has reached a result and send a *)
+  (* message announcing the result if it has received the necessary phase  *)
+  (* 2b messages.                                                          *)
+  (*************************************************************************)
+  /\ LET Decided(r, v) ==
+           (****************************************************************)
+           (* True iff instance r of the Paxos consensus algorithm has     *)
+           (* chosen the value v.                                          *)
+           (****************************************************************)
+           \E b \in Ballot, MS \in Majority : 
+             \A ac \in MS : [type |-> "phase2b", ins |-> r, 
+                              bal |-> b, val |-> v, acc |-> ac ] \in msgs
+     IN  \/ /\ \A r \in RM : Decided(r, "prepared")
+            /\ Send([type |-> "Commit"])
+         \/ /\ \E r \in RM : Decided(r, "aborted")
+            /\ Send([type |-> "Abort"])
+  /\ UNCHANGED <<rmState, aState>>
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(*                             ACCEPTOR ACTIONS                            *)
+(***************************************************************************)
+Phase1b(acc) ==  
+  \E m \in msgs : 
+    /\ m.type = "phase1a"
+    /\ aState[m.ins][acc].mbal < m.bal
+    /\ aState' = [aState EXCEPT ![m.ins][acc].mbal = m.bal]
+    /\ Send([type |-> "phase1b", 
+             ins  |-> m.ins, 
+             mbal |-> m.bal, 
+             bal  |-> aState[m.ins][acc].bal, 
+             val  |-> aState[m.ins][acc].val,
+             acc  |-> acc])
+    /\ UNCHANGED rmState
+
+Phase2b(acc) == 
+  /\ \E m \in msgs : 
+       /\ m.type = "phase2a"
+       /\ aState[m.ins][acc].mbal \leq m.bal
+       /\ aState' = [aState EXCEPT ![m.ins][acc].mbal = m.bal,
+                                   ![m.ins][acc].bal  = m.bal,
+                                   ![m.ins][acc].val  = m.val]
+       /\ Send([type |-> "phase2b", ins |-> m.ins, bal |-> m.bal, 
+                  val |-> m.val, acc |-> acc])
+  /\ UNCHANGED rmState
+-----------------------------------------------------------------------------
+PCNext ==  \* The next-state action
+  \/ \E r \in RM : \/ RMPrepare(r) 
+                   \/ RMChooseToAbort(r) 
+                   \/ RMRcvCommitMsg(r) 
+                   \/ RMRcvAbortMsg(r)
+  \/ \E bal \in Ballot \ {0}, r \in RM : Phase1a(bal, r) \/ Phase2a(bal, r)
+  \/ PCDecide
+  \/ \E acc \in Acceptor : Phase1b(acc) \/ Phase2b(acc) 
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(* The following part of the spec is not covered in Lecture 7.  It will be *)
+(* explained in Lecture 8.                                                 *)
+(***************************************************************************)
+PCSpec == PCInit /\ [][PCNext]_<<rmState, aState, msgs>>
+  (*************************************************************************)
+  (* The complete spec of the Paxos Commit protocol.                       *)
+  (*************************************************************************)
+
+THEOREM PCSpec => []PCTypeOK
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(* We now assert that the Paxos Commit protocol implements the transaction *)
+(* commit protocol of module TCommit.  The following statement imports     *)
+(* into the current module the definitions from module TCommit, including  *)
+(* the definition of TCSpec.                                               *)
+(***************************************************************************)
+
+INSTANCE TCommit
+
+THEOREM PCSpec => TCSpec
+</pre>
+            <button class="btn" data-clipboard-target="#bar"
+                  style="margin-top:5px;margin-bottom:10px">
+              Copy 
+            </button>
+           </div>
+           <div style="float:left;width:420px;margin-top:5px">
+             Then paste the text into the module editor as
+             the body of specification <code>SimpleProgram</code> .
+           </div>
+         </div>
+       </font> 
+  </div>
+-->
+
+   <!--*********************************************************************
+   * The display at the end of the video.                                  *
+   **********************************************************************-->
+    <div id = "end-title" style="float:left">
+      <div id = "item0b" style = "float:left">
+           <script> createContents("item0b", tocData) ; </script>
+      </div>
+      <div style = 
+           "float:left;margin-left:10px;font-size:20px;font-family:Calibri">
+      <h3 class="contents"> The Next Video</h3>
+       <p style="margin-left:2em;margin-top:1em;width:15em">   
+        <A href="video8a.html">Implementation - Part 1</a>
+     </p>
+      </div>
+    </div>
+
+
+<!--  HERE IS AN EXAMPLE OF DISPLAYING TEXT TO BE COPIED 
+    <div id="item3"  style="position:relative;top:2em;left:6em;width:60em"> 
+       <font style="font-size:17px;font-family:sans-serif"> 
+         <div style="width:15em;float:left;">
+           A tutorial might ask you to copy and paste a specification
+           like this one:
+           <div style="padding-left:3em;padding-top:1.5em">
+             <pre class="copyText" id="bar">
+MODULE DieHard 
+(***************************************************************************)
+(* In the movie Die Hard J1, the heros must obtain exactly 4 gallons of    *)
+(* water using a J2 gallon jug, a J1 gallon jug, and a water faucet.  Our  *)
+(* goal: to get TLC to solve the problem for us.                           *)
+(*                                                                         *)
+(* First, we write a spec that describes all allowable behaviors of our    *)
+(* heros.                                                                  *)
+(***************************************************************************)
+EXTENDS Integers
+  (*************************************************************************)
+  (* This statement imports the definitions of the ordinary operators on   *)
+  (* integers, such as +.                                                  *)
+  (*************************************************************************)
+
+CONSTANTS J1, J2, G
+=============================================================================
+</pre>
+<button class="btn" data-clipboard-target="#bar">
+    Copy Text
+</button>
+        </div>
+      </div>
+        <div style="float:left;width:20em;padding-left:3em">
+        Stop the video and copy this specification, either by
+        clicking on the button or by the usual way of copying
+        text.&nbsp;  If you
+          paste it into a model editor in the Toolbox, it will appear
+          in a normal size.&nbsp;  If you paste it into another text editor, 
+          you may have to 
+          increase the text's font size to make it readable.
+        </div>
+       </font> 
+    </div>
+-->
+
+<!--  HERE IS AN EXAMPLE OF OPENING A VIDEO IN A NEW WINDOW 
+    <div id="item2" style="position:relative;  top:1em;left:4em">
+         
+           <div style="text-align:left;width:30em">
+             <font style="font-size:19px;font-family:sans-serif">
+             <A href="summary-standalone.pdf" target=_blank>
+                <b>The TLA+ "Cheat Sheet"</b></font>
+             </A>
+           <p style="font-size:18px;font-family:sans-serif"> 
+            Left-click to open it in a new window, 
+               or right-click <br> and select 
+              &nbsp;<i>Save as ...</i>&nbsp;
+               to download it.
+           </p>
+           </div>
+
+  </div>
+-->
+  <!--**********************************************************************
+  * This is the end of the sequence of <div> items that are to be          *
+  * displayed at specified points in the video.                            *
+  ***********************************************************************-->
+</div>
+
+
+</body> 
+
+</html>
+

@@ -1,0 +1,379 @@
+<!-- THIS FILE BEGAN AS A COPY OF video/intro.html
+It is beening transformed little by little into the true html file
+for the installing video.
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<!--************************************************************************
+* The following imported JavaScript code is involved in copying text into  *
+* the copy buffer and was obtained from                                    *
+*                                                                          *
+*    https://clipboardjs.com/                                              *
+*                                                                          *
+* Note that the directory /dist that contains the clipboard.min.js file    *
+* must be moved to the right place and the src address corrected.          *
+*************************************************************************-->
+<script  src="dist/clipboard.min.js">
+</script>
+
+
+<script>
+/***************************************************************************
+*                     DATA FOR THE LECTURE                                 *
+*                                                                          *
+* The following data customizes the page for a particular video.           *
+***************************************************************************/
+
+/***************************************************************************
+* The name of the lecture.                                                 *
+***************************************************************************/
+var HEADING = "Resources and Tools" ;
+
+/***************************************************************************
+* Table of Contents                                                        *
+*                                                                          *
+* Specified by an array, each element of which is a two-element array A    *
+* with A[0] the name of a section and A[1] the time in seconds at which    *
+* the section of the video begins.                                         *
+***************************************************************************/
+var tocData = 
+   [["Prologue", 3],
+    ["TLA+ Resources", 25],
+    ["Downloading the Toolbox", 103], 
+    ["Creating a Spec", 167.5], 
+    ["The Pretty-Printer",  276],
+    ["Running TLC",  315],
+    ["The TLA+ Proof System", 516],   
+    ["The Unicode Option", 549],
+    ["Help!",598],
+    ["Epilogue", 640]
+   ] ;
+
+/***************************************************************************
+* Items Displayed at Specified Times                                       *
+*                                                                          *
+* An array that specifies when items are to be displayed in the Bottom     *
+* Section of the page.  Each element of the array is 3-element array A     *
+* where A[0] is the id of the item, which is to be displayed from time     *
+* A[1] through A[2] (in seconds) of the video.                             *
+*                                                                          *
+* The the same id should not appear twice in the ids the elements of       *
+* timingData, and each of those ids should be the same as the id of one    *
+* of the <div> elements in in the Bottom Section of the page, which are    *
+* children the <div> element with id "afterVideo".                         *
+*                                                                          *
+* Note: Putting something at the very end isn't a great idea because on    *
+* IE, if the user seeks to the end of the video, IE acts as if it's at     *
+* the beginning and doesn't display something that comes at the end.       *
+***************************************************************************/
+var timingData = 
+  [["begin-title", 0, 2],
+   ["install-instructions",  132, 140],
+   ["copy-spec", 247, 250],
+   ["end-title",    668,   1000]
+  ] ;
+
+</script>
+<script src=tlavideo.js> </script>
+
+
+<title id="titleId"></title>  <!-- title set by createHeading() -->
+
+<!-- The following loads the style sheet for the html files of the videos -->
+<link rel="stylesheet" type="text/css" href="tlastyles.css">
+
+
+</head>
+
+<body onresize="getVideoMag()"> 
+
+
+<!--************************************************************************
+* The body consists of the following sections:                             *
+*   - The heading section.                                                 *
+*   - The video section.                                                   *
+*   - The bottom section.                                                  *
+*************************************************************************-->
+
+<!--************************************************************************
+* The Heading Section                                                      *
+*                                                                          *
+* It consists of a single <div> element with id "headingId".  It contains  *
+* the name of the lecture.   This section is made invisible when the       *
+* video is in normal playing mode - that is, with videoState = "playing"   *
+* and timedItemDue = "false".                                              *
+*************************************************************************-->
+<div id="headingId" style="display:block">
+   <!-- The lecture name. -->
+   <div style="float:left;width:335px"> 
+   <H1 id="h1Id" style="margin-top:0em;margin-bottom:.5em">
+   </H1>
+   </div>
+
+   <script> createHeading() </script>
+</div>
+
+<!--************************************************************************
+* The Video Section                                                        *
+*                                                                          *
+* This is a <div> item containing two subitems: a <video> item that        *
+* displays the video and a <div> item that contains the following items:   *
+*                                                                          *
+*    - The controls for the video's playing size.                          *
+*    - Controls for skipping backwards and forwards in the video.          *
+*************************************************************************-->
+<div style="display:block;clear:left">
+
+   <!--*********************************************************************
+   * The <video> element.                                                  *
+   **********************************************************************-->
+   <video  onpause="pauseEvent()" 
+           onplay="playEvent()"
+           onfocus="videoGetsFocus()"
+           width=450
+           height=256
+           controls 
+           preload = "auto"
+           id="videoId">
+
+      <!--********************************************************************
+      * The src field of the following <source> tag is the URL of the video. *
+      *********************************************************************-->
+<!-- Here is the local copy of the video.  
+      <source src=  "video3.mp4">
+-->
+
+<!-- Here is the copy of the video on Channel 9  
+   <source 
+src="https://sec.ch9.ms/ch9/c905/9fe4877f-dcd8-4d88-ba24-17795f2cc905/video3_mid.mp4">
+-->
+
+<!-- Here is new Channel 9 copy provided by Golnaz Alibeigi -->
+
+<source 
+src="https://docs.microsoft.com/video/media/3825f0e6-9b0b-4a93-8750-a3fe1e25cb6e/video3_mid.mp4">
+
+       Your browser cannot display this tutorial because it does not 
+       support the video HTML tag.
+   </video> 
+
+   <!--*********************************************************************
+   * A <div> containing items displayed on a line below the video.         *
+   *                                                                       *
+   * One possibility is to remove the controls from the video itself and   *
+   * replace them with the items displayed here plus some other controls.  *
+   * The controls could also be moved to be on top of the video, and to    *
+   * be made visible for a few seconds when the mouse is moved over (and   *
+   * perhaps out of) the video.  This would make it possible to prevent    *
+   * the user from putting the video into full-screen mode.                *
+   **********************************************************************-->
+   <div id="below-video">
+     <!--*******************************************************************
+     * A span for showing the controls for skipping forward and back in    *
+     * the video and the "Speed", "Contents" and "How to View" buttons.    *
+     * It is created by a tlavideo.jss function.                           *
+     ********************************************************************-->
+   </div>
+</div>
+
+<!--************************************************************************
+* The Bottom Section                                                       *
+*                                                                          *
+* A <div> HTML element with id "afterVideo".  It normally contains the     *
+* table of contents when the video is not in normal playing mode.          *
+* However, at certain parts of the video, it will be replaced by material  *
+* relevant to that part.  That material will consist of a sequence of      *
+* <div> elements, identified by their ids.                                 *
+*                                                                          *
+* The sequence of <div> elements consists of one with id "tocId" followed  *
+* by a sequence of elements whose ids are in 1-1 correspondence with the   *
+* ids in timingData.                                                       *
+*************************************************************************-->
+<div id="afterVideo" style="display:block">
+
+   <!--*********************************************************************
+   * A <div> element containing the table of contents, which is created    *
+   * dynamically by the createContents JavaScript function                 *
+   **********************************************************************-->
+   <div id="tocId" style="float:left"></div>  
+     <script> createContents("tocId", tocData) ; </script>
+   </div>
+
+   <div id="rightBottom" style="display:block" >
+
+    <!--********************************************************************
+    * Next comes the sequence of items that are to appear, with the video  *
+    * minimized, at certain points in the video.  The timingData variable  *
+    * specifies at what point in the video they appear.                    *
+    *********************************************************************--> 
+
+   <!--*********************************************************************
+   * This is the call-out to appear at the beginning of the video.         *
+   **********************************************************************-->
+    <div id = "begin-title" style="float:left">
+      <div style = 
+           "float:left;margin-left:-20px;font-size:20px;font-family:Calibri">
+      <h3 class="contents">Lecture 3</h3>
+       <p style="margin-left:2em;margin-top:-1em;width:15em">   
+
+        This web page was written on:<br> 
+         &nbsp;&nbsp;30 August 2021<BR><BR>
+        The video was produced on:<br> 
+         &nbsp;&nbsp; 7 April 2017 
+     </p>
+      </div>
+     <div id = "item0a" style = "float:left;margin-left:-4em">
+           <script> createContents("item0a", tocData) ; 
+          </script>
+      </div>
+         </div>
+
+    <!--********************************************************************
+    * The "Install Instructions" call-out.                                 *
+    *********************************************************************-->
+     <div id = "install-instructions" style="float:left">
+      <div style = 
+           "float:left;margin-left:0px;margin-top:20px;font-size:20px;font-family:Calibri">
+        <p> 
+      <A href="https://lamport.azurewebsites.net/tla/toolbox.html?unhideBut=hide-obtain&unhideDiv=obtain"
+         target="_blank">
+        Click here for downloading and installation instructions</a> 
+        </p>
+      </div>
+    </div>
+
+
+    <!--********************************************************************
+    * The "Copy Spec" call-out.                                            *
+    *********************************************************************-->
+     <div id = "copy-spec" style="float:left; margin-top:20px"> 
+      <font style="font-size:17px;font-family:sans-serif"> 
+        <div style="width:420px;float:left;margin-left:25px">
+           Copy the following tiny text, either by
+        clicking on the <code>Copy</code>
+   button below it, or by your usual method of copying
+        text.&nbsp;  
+
+           <div style="padding-left:5em;padding-top:.5em">
+<pre class="copyText" id="bar">
+EXTENDS Integers
+VARIABLES i, pc   
+
+Init == (pc = "start") /\ (i = 0)
+
+Pick == /\ pc = "start"  
+        /\ i' \in 0..1000
+        /\ pc' = "middle"
+
+Add1 == /\ pc = "middle" 
+        /\ i' = i + 1
+        /\ pc' = "done"  
+           
+Next == Pick \/ Add1
+</pre>
+            <button class="btn" data-clipboard-target="#bar"
+                  style="margin-top:5px;margin-bottom:10px">
+              Copy 
+            </button>
+           </div>
+           <div style="float:left;width:420px;margin-top:5px">
+             Then paste the text into the module editor as
+             the body of specification <code>SimpleProgram</code> .
+           </div>
+         </div>
+       </font> 
+  </div>
+
+   <!--*********************************************************************
+   * The display at the end of the video.                                  *
+   **********************************************************************-->
+    <div id = "end-title" style="float:left">
+      <div id = "item0b" style = "float:left">
+           <script> createContents("item0b", tocData) ; </script>
+      </div>
+      <div style = 
+           "float:left;margin-left:10px;font-size:20px;font-family:Calibri">
+      <h3 class="contents"> The Next Video</h3>
+       <p style="margin-left:2em;margin-top:-1em;width:15em">   
+        <!-- The following href must be changed for the local copy -->
+        <A href="video4.html">Die Hard</a>
+     </p>
+      </div>
+    </div>
+
+
+<!--  HERE IS AN EXAMPLE OF DISPLAYING TEXXT TO BE COPIED 
+    <div id="item3"  style="position:relative;top:2em;left:6em;width:60em"> 
+       <font style="font-size:17px;font-family:sans-serif"> 
+         <div style="width:15em;float:left;">
+           A tutorial might ask you to copy and paste a specification
+           like this one:
+           <div style="padding-left:3em;padding-top:.5em">
+             <pre class="copyText" id="bar">
+MODULE DieHard 
+(***************************************************************************)
+(* In the movie Die Hard J1, the heros must obtain exactly 4 gallons of    *)
+(* water using a J2 gallon jug, a J1 gallon jug, and a water faucet.  Our  *)
+(* goal: to get TLC to solve the problem for us.                           *)
+(*                                                                         *)
+(* First, we write a spec that describes all allowable behaviors of our    *)
+(* heros.                                                                  *)
+(***************************************************************************)
+EXTENDS Integers
+  (*************************************************************************)
+  (* This statement imports the definitions of the ordinary operators on   *)
+  (* integers, such as +.                                                  *)
+  (*************************************************************************)
+
+CONSTANTS J1, J2, G
+=============================================================================
+</pre>
+<button class="btn" data-clipboard-target="#bar">
+    Copy Text
+</button>
+        </div>
+      </div>
+        <div style="float:left;width:20em;padding-left:3em">
+        Stop the video and copy this specification, either by
+        clicking on the button or by the usual way of copying
+        text.&nbsp;  If you
+          paste it into a model editor in the Toolbox, it will appear
+          in a normal size.&nbsp;  If you paste it into another text editor, 
+          you may have to 
+          increase the text's font size to make it readable.
+        </div>
+       </font> 
+    </div>
+-->
+<!--  HERE IS AN EXAMPLE OF OPENING A VIDEO IN A NEW WINDOW 
+    <div id="item2" style="position:relative;  top:1em;left:4em">
+         
+           <div style="text-align:left;width:30em">
+             <font style="font-size:19px;font-family:sans-serif">
+             <A href="summary-standalone.pdf" target=_blank>
+                <b>The TLA+ "Cheat Sheet"</b></font>
+             </A>
+           <p style="font-size:18px;font-family:sans-serif"> 
+            Left-click to open it in a new window, 
+               or right-click <br> and select 
+              &nbsp;<i>Save as ...</i>&nbsp;
+               to download it.
+           </p>
+           </div>
+
+  </div>
+-->
+  <!--**********************************************************************
+  * This is the end of the sequence of <div> items that are to be          *
+  * displayed at specified points in the video.                            *
+  ***********************************************************************-->
+</div>
+
+
+</body> 
+
+</html>
+

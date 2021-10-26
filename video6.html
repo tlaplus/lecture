@@ -1,0 +1,564 @@
+<!-- THIS FILE BEGAN AS A COPY OF video/video4.html.
+It has been transformed into the true html file for the twophase video.
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<!--************************************************************************
+* The following imported JavaScript code is involved in copying text into  *
+* the copy buffer and was obtained from                                    *
+*                                                                          *
+*    https://clipboardjs.com/                                              *
+*                                                                          *
+* Note that the directory /dist that contains the clipboard.min.js file    *
+* must be moved to the right place and the src address corrected.          *
+*************************************************************************-->
+<script  src="dist/clipboard.min.js">
+</script>
+
+
+<script>
+/***************************************************************************
+*                     DATA FOR THE LECTURE                                 *
+*                                                                          *
+* The following data customizes the page for a particular video.           *
+***************************************************************************/
+
+/***************************************************************************
+* The name of the lecture.                                                 *
+***************************************************************************/
+var HEADING = "Two-Phase Commit" ;
+
+/***************************************************************************
+* Table of Contents                                                        *
+*                                                                          *
+* Specified by an array, each element of which is a two-element array A    *
+* with A[0] the name of a section and A[1] the time in seconds at which    *
+* the section of the video begins.                                         *
+***************************************************************************/
+var tocData = 
+   [["Prologue", 5],
+    ["Records", 32],
+    ["Weddings", 117], 
+    ["The TLA+ Spec", 270.5], 
+    ["The Rest of the Spec",  734],
+    ["Checking the Spec",  942],
+    ["Model Values", 1010],
+    ["Correctness of Two-Phase Commit",1167],
+    ["Epilogue", 1248]
+   ] ;  
+
+/***************************************************************************
+* Items Displayed at Specified Times                                       *
+*                                                                          *
+* An array that specifies when items are to be displayed in the Bottom     *
+* Section of the page.  Each element of the array is 3-element array A     *
+* where A[0] is the id of the item, which is to be displayed from time     *
+* A[1] through A[2] (in seconds) of the video.                             *
+*                                                                          *
+* The the same id should not appear twice in the ids the elements of       *
+* timingData, and each of those ids should be the same as the id of one    *
+* of the <div> elements in in the Bottom Section of the page, which are    *
+* children the <div> element with id "afterVideo".                         *
+*                                                                          *
+* Note: Putting something at the very end isn't a great idea because on    *
+* IE, if the user seeks to the end of the video, IE acts as if it's at     *
+* the beginning and doesn't display something that comes at the end.       *
+***************************************************************************/
+var timingData = 
+  [["begin-title", 0, 5],
+   ["copy-spec", 295.5, 301],
+   ["end-title",    1275,   2000]
+  ] ;
+
+</script>
+<script src=tlavideo.js> </script>
+
+
+<title id="titleId"></title>  <!-- title set by createHeading() -->
+
+<!-- The following loads the style sheet for the html files of the videos -->
+<link rel="stylesheet" type="text/css" href="tlastyles.css">
+</head>
+
+<body onresize="getVideoMag()"> 
+
+
+<!--************************************************************************
+* The body consists of the following sections:                             *
+*   - The heading section.                                                 *
+*   - The video section.                                                   *
+*   - The bottom section.                                                  *
+*************************************************************************-->
+
+<!--************************************************************************
+* The Heading Section                                                      *
+*                                                                          *
+* It consists of a single <div> element with id "headingId".  It contains  *
+* the name of the lecture.   This section is made invisible when the       *
+* video is in normal playing mode - that is, with videoState = "playing"   *
+* and timedItemDue = "false".                                              *
+*************************************************************************-->
+<div id="headingId" style="display:block">
+   <!-- The lecture name. -->
+   <div style="float:left;width:335px"> 
+   <H1 id="h1Id" style="margin-top:0em;margin-bottom:.5em">
+   </H1>
+   </div>
+
+   <script> createHeading() </script>
+</div>
+
+<!--************************************************************************
+* The Video Section                                                        *
+*                                                                          *
+* This is a <div> item containing two subitems: a <video> item that        *
+* displays the video and a <div> item that contains the following items:   *
+*                                                                          *
+*    - The controls for the video's playing size.                          *
+*    - Controls for skipping backwards and forwards in the video.          *
+*************************************************************************-->
+<div style="display:block;clear:left">
+
+   <!--*********************************************************************
+   * The <video> element.                                                  *
+   **********************************************************************-->
+   <video  onpause="pauseEvent()" 
+           onplay="playEvent()"
+           onfocus="videoGetsFocus()"
+           width=450
+           height=256
+           controls 
+           preload = "auto"
+           id="videoId">
+
+      <!--********************************************************************
+      * The src field of the following <source> tag is the URL of the video. *
+      *********************************************************************-->
+<!-- Here is the local copy of version 2 of the video.  
+      <source src=  "video6-v2.mp4">
+--> 
+
+<!-- Here is the copy of the medium-res video for version 2 on Channel 9  
+
+   <source 
+src="https:/sec.ch9.ms/ch9/6171/b1c5f0b7-f8d8-433d-b678-5784fda66171/video6v2_mid.mp4">
+-->
+
+<!-- Here is new Channel 9 copy provided by Golnaz Alibeigi -->
+  <source 
+src="https://docs.microsoft.com/video/media/b22d29eb-714e-4394-aa4c-d7f13d4dce54/video6v2_mid.mp4">
+
+
+<!-- Here are the files for version 1 of the video.  
+      local copy: <source src=  "video6.mp4">
+      channel 9 mid-resolution copy:
+   <source 
+src="http://video.ch9.ms/ch9/dee9/8b79af72-7de6-4940-a455-adb88d24dee9/video6_mid.mp4">
+-->
+
+<!-- Here is the local copy of version 1 of the video.  
+      <source src=  "video6.mp4">
+--> 
+
+
+
+       Your browser cannot display this tutorial because it does not 
+       support the video HTML tag.
+   </video> 
+
+   <!--*********************************************************************
+   * A <div> containing items displayed on a line below the video.         *
+   *                                                                       *
+   * One possibility is to remove the controls from the video itself and   *
+   * replace them with the items displayed here plus some other controls.  *
+   * The controls could also be moved to be on top of the video, and to    *
+   * be made visible for a few seconds when the mouse is moved over (and   *
+   * perhaps out of) the video.  This would make it possible to prevent    *
+   * the user from putting the video into full-screen mode.                *
+   **********************************************************************-->
+   <div id="below-video">
+     <!--*******************************************************************
+     * A span for showing the controls for skipping forward and back in    *
+     * the video and the "Speed", "Contents" and "How to View" buttons.    *
+     * It is created by a tlavideo.jss function.                           *
+     ********************************************************************-->
+   </div>
+</div>
+
+<!--************************************************************************
+* The Bottom Section                                                       *
+*                                                                          *
+* A <div> HTML element with id "afterVideo".  It normally contains the     *
+* table of contents when the video is not in normal playing mode.          *
+* However, at certain parts of the video, it will be replaced by material  *
+* relevant to that part.  That material will consist of a sequence of      *
+* <div> elements, identified by their ids.                                 *
+*                                                                          *
+* The sequence of <div> elements consists of one with id "tocId" followed  *
+* by a sequence of elements whose ids are in 1-1 correspondence with the   *
+* ids in timingData.                                                       *
+*************************************************************************-->
+<div id="afterVideo" style="display:block">
+
+   <!--*********************************************************************
+   * A <div> element containing the table of contents, which is created    *
+   * dynamically by the createContents JavaScript function                 *
+   **********************************************************************-->
+   <div id="tocId" style="float:left"></div>  
+     <script> createContents("tocId", tocData) ; </script>
+   </div>
+
+   <div id="rightBottom" style="display:block" >
+
+    <!--********************************************************************
+    * Next comes the sequence of items that are to appear, with the video  *
+    * minimized, at certain points in the video.  The timingData variable  *
+    * specifies at what point in the video they appear.                    *
+    *********************************************************************--> 
+
+   <!--*********************************************************************
+   * This is the call-out to appear at the beginning of the video.         *
+   **********************************************************************-->
+    <div id = "begin-title" style="float:left">
+      <div style = 
+           "float:left;margin-left:-20px;font-size:20px;font-family:Calibri">
+      <h3 class="contents">Lecture 6</h3>
+       <p style="margin-left:2em;margin-top:-1em;width:15em">   
+
+        This web page was revised on:<br> 
+         &nbsp;&nbsp;30 August 2021<BR><BR>
+        Original video was produced on:<br> 
+         &nbsp;&nbsp;12 August 2017 <br>
+        Corrected version produced on:<br> 
+         &nbsp;&nbsp;14 December 2017 <br>
+     </p>
+      </div>
+     <div id = "item0a" style = "float:left;margin-left:-4em">
+           <script> createContents("item0a", tocData) ; 
+          </script>
+      </div>
+         </div>
+
+    <!--********************************************************************
+    * The "What's wrong with first FillSmall definition" call-out.         *
+    *********************************************************************-->
+<!--
+     <div id = "whats-wrong" style="float:left">
+      <div style = 
+           "float:left;margin-left:30px;font-size:30px;font-family:Calibri">
+        <p>
+        Type a space to stop the video.
+        </p>
+      </div>
+    </div>
+-->
+
+    <!--********************************************************************
+    * The "Write Your Definitions " call-out.         *
+    *********************************************************************-->
+<!--
+     <div id = "write-defs" style="float:left">
+      <div style = 
+           "float:left;margin-top:-15px;margin-left:60px;font-size:30px;font-family:Calibri">
+        <p>
+        Stop the video and write<br>
+        down your definitions.
+        </p>
+      </div>
+    </div>
+-->
+
+    <!--********************************************************************
+    * The "Copy Spec" call-out.                                            *
+    *********************************************************************-->
+     <div id = "copy-spec" style="float:left; margin-top:20px"> 
+      <font style="font-size:17px;font-family:sans-serif"> 
+        <div style="width:420px;float:left;margin-left:25px">
+           Copy the following tiny text, either by
+        clicking on the <code>Copy</code>
+   button below it, or by your usual method of copying
+        text.&nbsp;  
+
+           <div style="padding-left:5em;padding-top:.5em">
+<pre class="copyText" id="bar">
+(***************************************************************************)
+(* This specification is discussed in "Two-Phase Commit", Lecture 6 of the *)
+(* TLA+ Video Course.  It describes the Two-Phase Commit protocol, in      *)
+(* which a transaction manager (TM) coordinates the resource managers      *)
+(* (RMs) to implement the Transaction Commit specification of module       *)
+(* TCommit.  In this specification, RMs spontaneously issue Prepared       *)
+(* messages.  We ignore the Prepare messages that the TM can send to the   *)
+(* RMs.                                                                    *)
+(*                                                                         *)
+(* For simplicity, we also eliminate Abort messages sent by an RM when it  *)
+(* decides to abort.  Such a message would cause the TM to abort the       *)
+(* transaction, an event represented here by the TM spontaneously deciding *)
+(* to abort.                                                               *)
+(***************************************************************************)
+CONSTANT RM  \* The set of resource managers
+
+VARIABLES
+  rmState,       \* rmState[r] is the state of resource manager r.
+  tmState,       \* The state of the transaction manager.
+  tmPrepared,    \* The set of RMs from which the TM has received "Prepared"
+                 \* messages.
+  msgs           
+    (***********************************************************************)
+    (* In the protocol, processes communicate with one another by sending  *)
+    (* messages.  For simplicity, we represent message passing with the    *)
+    (* variable msgs whose value is the set of all messages that have been *)
+    (* sent.  A message is sent by adding it to the set msgs.  An action   *)
+    (* that, in an implementation, would be enabled by the receipt of a    *)
+    (* certain message is here enabled by the presence of that message in  *)
+    (* msgs.  For simplicity, messages are never removed from msgs.  This  *)
+    (* allows a single message to be received by multiple receivers.       *)
+    (* Receipt of the same message twice is therefore allowed; but in this *)
+    (* particular protocol, that's not a problem.                          *)
+    (***********************************************************************)
+
+Messages ==
+  (*************************************************************************)
+  (* The set of all possible messages.  Messages of type "Prepared" are    *)
+  (* sent from the RM indicated by the message's rm field to the TM.       *)
+  (* Messages of type "Commit" and "Abort" are broadcast by the TM, to be  *)
+  (* received by all RMs.  The set msgs contains just a single copy of     *)
+  (* such a message.                                                       *)
+  (*************************************************************************)
+  [type : {"Prepared"}, rm : RM]  \cup  [type : {"Commit", "Abort"}]
+   
+TPTypeOK ==  
+  (*************************************************************************)
+  (* The type-correctness invariant                                        *)
+  (*************************************************************************)
+  /\ rmState \in [RM -> {"working", "prepared", "committed", "aborted"}]
+  /\ tmState \in {"init", "done"}
+  /\ tmPrepared \subseteq RM
+  /\ msgs \subseteq Messages
+
+TPInit ==   
+  (*************************************************************************)
+  (* The initial predicate.                                                *)
+  (*************************************************************************)
+  /\ rmState = [r \in RM |-> "working"]
+  /\ tmState = "init"
+  /\ tmPrepared   = {}
+  /\ msgs = {}
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(* We now define the actions that may be performed by the processes, first *)
+(* the TM's actions, then the RMs' actions.                                *)
+(***************************************************************************)
+TMRcvPrepared(r) ==
+  (*************************************************************************)
+  (* The TM receives a "Prepared" message from resource manager r.  We     *)
+  (* could add the additional enabling condition r \notin tmPrepared,      *)
+  (* which disables the action if the TM has already received this         *)
+  (* message.  But there is no need, because in that case the action has   *)
+  (* no effect; it leaves the state unchanged.                             *)
+  (*************************************************************************)
+  /\ tmState = "init"
+  /\ [type |-> "Prepared", rm |-> r] \in msgs
+  /\ tmPrepared' = tmPrepared \cup {r}
+  /\ UNCHANGED &lt;&lt;rmState, tmState, msgs&gt;&gt;
+
+TMCommit ==
+  (*************************************************************************)
+  (* The TM commits the transaction; enabled iff the TM is in its initial  *)
+  (* state and every RM has sent a "Prepared" message.                     *)
+  (*************************************************************************)
+  /\ tmState = "init"
+  /\ tmPrepared = RM
+  /\ tmState' = "done"
+  /\ msgs' = msgs \cup {[type |-> "Commit"]}
+  /\ UNCHANGED &lt;&lt;rmState, tmPrepared&gt;&gt;
+
+TMAbort ==
+  (*************************************************************************)
+  (* The TM spontaneously aborts the transaction.                          *)
+  (*************************************************************************)
+  /\ tmState = "init"
+  /\ tmState' = "done"
+  /\ msgs' = msgs \cup {[type |-> "Abort"]}
+  /\ UNCHANGED &lt;&lt;rmState, tmPrepared&gt;&gt;
+
+RMPrepare(r) == 
+  (*************************************************************************)
+  (* Resource manager r prepares.                                          *)
+  (*************************************************************************)
+  /\ rmState[r] = "working"
+  /\ rmState' = [rmState EXCEPT ![r] = "prepared"]
+  /\ msgs' = msgs \cup {[type |-> "Prepared", rm |-> r]}
+  /\ UNCHANGED &lt;&lt;tmState, tmPrepared&gt;&gt;
+  
+RMChooseToAbort(r) ==
+  (*************************************************************************)
+  (* Resource manager r spontaneously decides to abort.  As noted above, r *)
+  (* does not send any message in our simplified spec.                     *)
+  (*************************************************************************)
+  /\ rmState[r] = "working"
+  /\ rmState' = [rmState EXCEPT ![r] = "aborted"]
+  /\ UNCHANGED &lt;&lt;tmState, tmPrepared, msgs&gt;&gt;
+
+RMRcvCommitMsg(r) ==
+  (*************************************************************************)
+  (* Resource manager r is told by the TM to commit.                       *)
+  (*************************************************************************)
+  /\ [type |-> "Commit"] \in msgs
+  /\ rmState' = [rmState EXCEPT ![r] = "committed"]
+  /\ UNCHANGED &lt;&lt;tmState, tmPrepared, msgs&gt;&gt;
+
+RMRcvAbortMsg(r) ==
+  (*************************************************************************)
+  (* Resource manager r is told by the TM to abort.                        *)
+  (*************************************************************************)
+  /\ [type |-> "Abort"] \in msgs
+  /\ rmState' = [rmState EXCEPT ![r] = "aborted"]
+  /\ UNCHANGED &lt;&lt;tmState, tmPrepared, msgs&gt;&gt;
+
+TPNext ==
+  \/ TMCommit \/ TMAbort
+  \/ \E r \in RM : 
+       TMRcvPrepared(r) \/ RMPrepare(r) \/ RMChooseToAbort(r)
+         \/ RMRcvCommitMsg(r) \/ RMRcvAbortMsg(r)
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(* The material below this point is not discussed in Video Lecture 6.  It  *)
+(* will be explained in Video Lecture 8.                                   *)
+(***************************************************************************)
+
+TPSpec == TPInit /\ [][TPNext]_&lt;&lt;rmState, tmState, tmPrepared, msgs&gt;&gt;
+  (*************************************************************************)
+  (* The complete spec of the Two-Phase Commit protocol.                   *)
+  (*************************************************************************)
+
+THEOREM TPSpec => []TPTypeOK
+  (*************************************************************************)
+  (* This theorem asserts that the type-correctness predicate TPTypeOK is  *)
+  (* an invariant of the specification.                                    *)
+  (*************************************************************************)
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(* We now assert that the Two-Phase Commit protocol implements the         *)
+(* Transaction Commit protocol of module TCommit.  The following statement *)
+(* imports all the definitions from module TCommit into the current        *)
+(* module.                                                                 *)
+(***************************************************************************)
+INSTANCE TCommit 
+
+THEOREM TPSpec => TCSpec
+  (*************************************************************************)
+  (* This theorem asserts that the specification TPSpec of the Two-Phase   *)
+  (* Commit protocol implements the specification TCSpec of the            *)
+  (* Transaction Commit protocol.                                          *)
+  (*************************************************************************)
+(***************************************************************************)
+(* The two theorems in this module have been checked with TLC for six      *)
+(* RMs, a configuration with 50816 reachable states, in a little over a    *)
+(* minute on a 1 GHz PC.                                                   *)
+(***************************************************************************)
+</pre>
+            <button class="btn" data-clipboard-target="#bar"
+                  style="margin-top:5px;margin-bottom:10px">
+              Copy 
+            </button>
+           </div>
+           <div style="float:left;width:420px;margin-top:5px">
+             Then paste the text into the module editor as
+             the body of specification <code>TwoPhase</code> .
+           </div>
+         </div>
+       </font> 
+  </div>
+
+   <!--*********************************************************************
+   * The display at the end of the video.                                  *
+   **********************************************************************-->
+    <div id = "end-title" style="float:left">
+      <div id = "item0b" style = "float:left">
+           <script> createContents("item0b", tocData) ; </script>
+      </div>
+      <div style = 
+           "float:left;margin-left:10px;font-size:20px;font-family:Calibri">
+      <h3 class="contents"> The Next Video</h3>
+       <p style="margin-left:2em;margin-top:-1em;width:15em">   
+        <A href="video7.html">Paxos Commit</a>
+     </p>
+      </div>
+    </div>
+
+
+<!--  HERE IS AN EXAMPLE OF DISPLAYING TEXT TO BE COPIED 
+    <div id="item3"  style="position:relative;top:2em;left:6em;width:60em"> 
+       <font style="font-size:17px;font-family:sans-serif"> 
+         <div style="width:15em;float:left;">
+           A tutorial might ask you to copy and paste a specification
+           like this one:
+           <div style="padding-left:3em;padding-top:.5em">
+             <pre class="copyText" id="bar">
+MODULE DieHard 
+(***************************************************************************)
+(* In the movie Die Hard J1, the heros must obtain exactly 4 gallons of    *)
+(* water using a J2 gallon jug, a J1 gallon jug, and a water faucet.  Our  *)
+(* goal: to get TLC to solve the problem for us.                           *)
+(*                                                                         *)
+(* First, we write a spec that describes all allowable behaviors of our    *)
+(* heros.                                                                  *)
+(***************************************************************************)
+EXTENDS Integers
+  (*************************************************************************)
+  (* This statement imports the definitions of the ordinary operators on   *)
+  (* integers, such as +.                                                  *)
+  (*************************************************************************)
+
+CONSTANTS J1, J2, G
+=============================================================================
+</pre>
+<button class="btn" data-clipboard-target="#bar">
+    Copy Text
+</button>
+        </div>
+      </div>
+        <div style="float:left;width:20em;padding-left:3em">
+        Stop the video and copy this specification, either by
+        clicking on the button or by the usual way of copying
+        text.&nbsp;  If you
+          paste it into a model editor in the Toolbox, it will appear
+          in a normal size.&nbsp;  If you paste it into another text editor, 
+          you may have to 
+          increase the text's font size to make it readable.
+        </div>
+       </font> 
+    </div>
+-->
+<!--  HERE IS AN EXAMPLE OF OPENING A VIDEO IN A NEW WINDOW 
+    <div id="item2" style="position:relative;  top:1em;left:4em">
+         
+           <div style="text-align:left;width:30em">
+             <font style="font-size:19px;font-family:sans-serif">
+             <A href="summary-standalone.pdf" target=_blank>
+                <b>The TLA+ "Cheat Sheet"</b></font>
+             </A>
+           <p style="font-size:18px;font-family:sans-serif"> 
+            Left-click to open it in a new window, 
+               or right-click <br> and select 
+              &nbsp;<i>Save as ...</i>&nbsp;
+               to download it.
+           </p>
+           </div>
+
+  </div>
+-->
+  <!--**********************************************************************
+  * This is the end of the sequence of <div> items that are to be          *
+  * displayed at specified points in the video.                            *
+  ***********************************************************************-->
+</div>
+
+
+</body> 
+
+</html>
+

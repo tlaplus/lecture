@@ -1,0 +1,446 @@
+<!-- THIS FILE BEGAN AS A COPY OF video/video4.html.
+It has been transformed into the true html file for the tcommit video.
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<!--************************************************************************
+* The following imported JavaScript code is involved in copying text into  *
+* the copy buffer and was obtained from                                    *
+*                                                                          *
+*    https://clipboardjs.com/                                              *
+*                                                                          *
+* Note that the directory /dist that contains the clipboard.min.js file    *
+* must be moved to the right place and the src address corrected.          *
+*************************************************************************-->
+<script  src="dist/clipboard.min.js">
+</script>
+
+
+<script>
+/***************************************************************************
+*                     DATA FOR THE LECTURE                                 *
+*                                                                          *
+* The following data customizes the page for a particular video.           *
+***************************************************************************/
+
+/***************************************************************************
+* The name of the lecture.                                                 *
+***************************************************************************/
+var HEADING = "Transaction Commit" ;
+
+/***************************************************************************
+* Table of Contents                                                        *
+*                                                                          *
+* Specified by an array, each element of which is a two-element array A    *
+* with A[0] the name of a section and A[1] the time in seconds at which    *
+* the section of the video begins.                                         *
+***************************************************************************/
+var tocData = 
+   [["Prologue", 2.8],
+    ["Weddings", 53],
+    ["Transaction Commit", 254], 
+    ["The TLA+ Spec", 315.5], 
+    ["Checking the Spec",  1094],
+    ["A Parsing Note", 1326],   
+    ["Comments", 1378.5],
+    ["Epilogue", 1446.5]
+   ] ;
+
+/***************************************************************************
+* Items Displayed at Specified Times                                       *
+*                                                                          *
+* An array that specifies when items are to be displayed in the Bottom     *
+* Section of the page.  Each element of the array is 3-element array A     *
+* where A[0] is the id of the item, which is to be displayed from time     *
+* A[1] through A[2] (in seconds) of the video.                             *
+*                                                                          *
+* The the same id should not appear twice in the ids the elements of       *
+* timingData, and each of those ids should be the same as the id of one    *
+* of the <div> elements in in the Bottom Section of the page, which are    *
+* children the <div> element with id "afterVideo".                         *
+*                                                                          *
+* Note: Putting something at the very end isn't a great idea because on    *
+* IE, if the user seeks to the end of the video, IE acts as if it's at     *
+* the beginning and doesn't display something that comes at the end.       *
+***************************************************************************/
+var timingData = 
+  [["begin-title", 0, 3],
+   ["copy-spec", 337, 342],
+   ["stop-and-think", 704, 709],
+   ["end-title",    1473,   2000] 
+  ] ;
+
+</script>
+<script src=tlavideo.js> </script>
+
+
+<title id="titleId"></title>  <!-- title set by createHeading() -->
+
+<!-- The following loads the style sheet for the html files of the videos -->
+<link rel="stylesheet" type="text/css" href="tlastyles.css">
+</head>
+
+<body onresize="getVideoMag()"> 
+
+
+<!--************************************************************************
+* The body consists of the following sections:                             *
+*   - The heading section.                                                 *
+*   - The video section.                                                   *
+*   - The bottom section.                                                  *
+*************************************************************************-->
+
+<!--************************************************************************
+* The Heading Section                                                      *
+*                                                                          *
+* It consists of a single <div> element with id "headingId".  It contains  *
+* the name of the lecture.   This section is made invisible when the       *
+* video is in normal playing mode - that is, with videoState = "playing"   *
+* and timedItemDue = "false".                                              *
+*************************************************************************-->
+<div id="headingId" style="display:block">
+   <!-- The lecture name. -->
+   <div style="float:left;width:335px"> 
+   <H1 id="h1Id" style="margin-top:0em;margin-bottom:.5em">
+   </H1>
+   </div>
+
+   <script> createHeading() </script>
+</div>
+
+<!--************************************************************************
+* The Video Section                                                        *
+*                                                                          *
+* This is a <div> item containing two subitems: a <video> item that        *
+* displays the video and a <div> item that contains the following items:   *
+*                                                                          *
+*    - The controls for the video's playing size.                          *
+*    - Controls for skipping backwards and forwards in the video.          *
+*************************************************************************-->
+<div style="display:block;clear:left">
+
+   <!--*********************************************************************
+   * The <video> element.                                                  *
+   **********************************************************************-->
+   <video  onpause="pauseEvent()" 
+           onplay="playEvent()"
+           onfocus="videoGetsFocus()"
+           width=450
+           height=256
+           controls 
+           preload = "auto"
+           id="videoId">
+
+      <!--********************************************************************
+      * The src field of the following <source> tag is the URL of the video. *
+      *********************************************************************-->
+
+<!-- Here is the local copy of the video 
+      <source src=  "video5.mp4">        -->
+
+
+<!-- Here is the copy of the medium resolution video on Channel 9  
+   <source 
+src="https://sec.ch9.ms/ch9/a5c9/c5a12cbb-4620-4198-8d42-5286a21da5c9/video5_mid.mp4">
+-->
+
+<!-- Here is new Channel 9 copy provided by Golnaz Alibeigi -->
+<source 
+src="https://docs.microsoft.com/video/media/6fb6743a-7053-4ae7-a24f-2c147373747a/video5_mid.mp4">
+
+       Your browser cannot display this tutorial because it does not 
+       support the video HTML tag.
+   </video> 
+
+   <!--*********************************************************************
+   * A <div> containing items displayed on a line below the video.         *
+   *                                                                       *
+   * One possibility is to remove the controls from the video itself and   *
+   * replace them with the items displayed here plus some other controls.  *
+   * The controls could also be moved to be on top of the video, and to    *
+   * be made visible for a few seconds when the mouse is moved over (and   *
+   * perhaps out of) the video.  This would make it possible to prevent    *
+   * the user from putting the video into full-screen mode.                *
+   **********************************************************************-->
+   <div id="below-video">
+     <!--*******************************************************************
+     * A span for showing the controls for skipping forward and back in    *
+     * the video and the "Speed", "Contents" and "How to View" buttons.    *
+     * It is created by a tlavideo.jss function.                           *
+     ********************************************************************-->
+   </div>
+</div>
+
+<!--************************************************************************
+* The Bottom Section                                                       *
+*                                                                          *
+* A <div> HTML element with id "afterVideo".  It normally contains the     *
+* table of contents when the video is not in normal playing mode.          *
+* However, at certain parts of the video, it will be replaced by material  *
+* relevant to that part.  That material will consist of a sequence of      *
+* <div> elements, identified by their ids.                                 *
+*                                                                          *
+* The sequence of <div> elements consists of one with id "tocId" followed  *
+* by a sequence of elements whose ids are in 1-1 correspondence with the   *
+* ids in timingData.                                                       *
+*************************************************************************-->
+<div id="afterVideo" style="display:block">
+
+   <!--*********************************************************************
+   * A <div> element containing the table of contents, which is created    *
+   * dynamically by the createContents JavaScript function                 *
+   **********************************************************************-->
+   <div id="tocId" style="float:left"></div>  
+     <script> createContents("tocId", tocData) ; </script>
+   </div>
+
+   <div id="rightBottom" style="display:block" >
+
+    <!--********************************************************************
+    * Next comes the sequence of items that are to appear, with the video  *
+    * minimized, at certain points in the video.  The timingData variable  *
+    * specifies at what point in the video they appear.                    *
+    *********************************************************************--> 
+
+   <!--*********************************************************************
+   * This is the call-out to appear at the beginning of the video.         *
+   **********************************************************************-->
+    <div id = "begin-title" style="float:left">
+      <div style = 
+           "float:left;margin-left:-20px;font-size:20px;font-family:Calibri">
+      <h3 class="contents">Lecture 5</h3>
+       <p style="margin-left:2em;margin-top:-1em;width:15em">   
+
+        This web page was written on:<br> 
+         &nbsp;&nbsp;30 August 2021<BR><BR>
+        The video was produced on:<br> 
+         &nbsp;&nbsp;12 August 2017 
+     </p>
+      </div>
+     <div id = "item0a" style = "float:left;margin-left:-4em">
+           <script> createContents("item0a", tocData) ; 
+          </script>
+      </div>
+         </div>
+
+    <!--********************************************************************
+    * The "What's wrong with first FillSmall definition" call-out.         *
+    *********************************************************************-->
+<!--
+     <div id = "whats-wrong" style="float:left">
+      <div style = 
+           "float:left;margin-left:30px;font-size:30px;font-family:Calibri">
+        <p>
+        Type a space to stop the video.
+        </p>
+      </div>
+     </div>
+-->  
+
+    <!--********************************************************************
+    * The "Stop and Think" call-out.                                       *
+    *********************************************************************-->
+      <div id = "stop-and-think" style="float:left">
+      <div style = 
+           "float:left;margin-top:-15px;margin-left:60px;font-size:60px;font-family:Calibri;color:red">
+        <p>
+        <b>STOP  &nbsp;AND <br> &nbsp;&nbsp;T H I N K</b>
+        </p>
+      </div>
+    </div>
+
+
+    <!--********************************************************************
+    * The "Copy Spec" call-out.                                            *
+    *********************************************************************-->
+     <div id = "copy-spec" style="float:left; margin-top:20px"> 
+      <font style="font-size:17px;font-family:sans-serif"> 
+        <div style="width:420px;float:left;margin-left:25px">
+           Copy the following tiny text, either by
+        clicking on the <code>Copy</code>
+   button below it, or by your usual method of copying
+        text.&nbsp;  
+
+           <div style="padding-left:5em;padding-top:.5em">
+<pre class="copyText" id="bar">
+(***************************************************************************)
+(* This specification is explained in "Transaction Commit", Lecture 5 of   *)
+(* the TLA+ Video Course.                                                  *)
+(***************************************************************************)
+CONSTANT RM       \* The set of participating resource managers
+
+VARIABLE rmState  \* rmState[rm] is the state of resource manager rm.
+-----------------------------------------------------------------------------
+TCTypeOK == 
+  (*************************************************************************)
+  (* The type-correctness invariant                                        *)
+  (*************************************************************************)
+  rmState \in [RM -> {"working", "prepared", "committed", "aborted"}]
+        
+TCInit ==   rmState = [r \in RM |-> "working"]
+  (*************************************************************************)
+  (* The initial predicate.                                                *)
+  (*************************************************************************)
+
+canCommit == \A r \in RM : rmState[r] \in {"prepared", "committed"}
+  (*************************************************************************)
+  (* True iff all RMs are in the "prepared" or "committed" state.          *)
+  (*************************************************************************)
+
+notCommitted == \A r \in RM : rmState[r] # "committed" 
+  (*************************************************************************)
+  (* True iff no resource manager has decided to commit.                   *)
+  (*************************************************************************)
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(* We now define the actions that may be performed by the RMs, and then    *)
+(* define the complete next-state action of the specification to be the    *)
+(* disjunction of the possible RM actions.                                 *)
+(***************************************************************************)
+Prepare(r) == /\ rmState[r] = "working"
+              /\ rmState' = [rmState EXCEPT ![r] = "prepared"]
+
+Decide(r)  == \/ /\ rmState[r] = "prepared"
+                 /\ canCommit
+                 /\ rmState' = [rmState EXCEPT ![r] = "committed"]
+              \/ /\ rmState[r] \in {"working", "prepared"}
+                 /\ notCommitted
+                 /\ rmState' = [rmState EXCEPT ![r] = "aborted"]
+
+TCNext == \E r \in RM : Prepare(r) \/ Decide(r)
+  (*************************************************************************)
+  (* The next-state action.                                                *)
+  (*************************************************************************)
+-----------------------------------------------------------------------------
+TCConsistent ==  
+  (*************************************************************************)
+  (* A state predicate asserting that two RMs have not arrived at          *)
+  (* conflicting decisions.  It is an invariant of the specification.      *)
+  (*************************************************************************)
+  \A r1, r2 \in RM : ~ /\ rmState[r1] = "aborted"
+                       /\ rmState[r2] = "committed"
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(* The following part of the spec is not discussed in Video Lecture 5.  It *)
+(* will be explained in Video Lecture 8.                                   *)
+(***************************************************************************)
+TCSpec == TCInit /\ [][TCNext]_rmState
+  (*************************************************************************)
+  (* The complete specification of the protocol written as a temporal      *)
+  (* formula.                                                              *)
+  (*************************************************************************)
+
+THEOREM TCSpec => [](TCTypeOK /\ TCConsistent)
+  (*************************************************************************)
+  (* This theorem asserts the truth of the temporal formula whose meaning  *)
+  (* is that the state predicate TCTypeOK /\ TCInvariant is an invariant   *)
+  (* of the specification TCSpec.  Invariance of this conjunction is       *)
+  (* equivalent to invariance of both of the formulas TCTypeOK and         *)
+  (* TCConsistent.                                                         *)
+  (*************************************************************************)
+</pre>
+            <button class="btn" data-clipboard-target="#bar"
+                  style="margin-top:5px;margin-bottom:10px">
+              Copy 
+            </button>
+           </div>
+           <div style="float:left;width:420px;margin-top:5px">
+             Then paste the text into the module editor as
+             the body of specification <code>TCommit</code> .
+           </div>
+         </div>
+       </font> 
+  </div>
+
+   <!--*********************************************************************
+   * The display at the end of the video.                                  *
+   **********************************************************************-->
+    <div id = "end-title" style="float:left">
+      <div id = "item0b" style = "float:left">
+           <script> createContents("item0b", tocData) ; </script>
+      </div>
+      <div style = 
+           "float:left;margin-left:10px;font-size:20px;font-family:Calibri">
+      <h3 class="contents"> The Next Video</h3>
+       <p style="margin-left:2em;margin-top:-1em;width:15em">   
+        <A href="video6.html">Two-Phase Commit</a>
+     </p>
+      </div>
+    </div>
+
+
+<!--  HERE IS AN EXAMPLE OF DISPLAYING TEXT TO BE COPIED 
+    <div id="item3"  style="position:relative;top:2em;left:6em;width:60em"> 
+       <font style="font-size:17px;font-family:sans-serif"> 
+         <div style="width:15em;float:left;">
+           A tutorial might ask you to copy and paste a specification
+           like this one:
+           <div style="padding-left:3em;padding-top:.5em">
+             <pre class="copyText" id="bar">
+MODULE DieHard 
+(***************************************************************************)
+(* In the movie Die Hard J1, the heros must obtain exactly 4 gallons of    *)
+(* water using a J2 gallon jug, a J1 gallon jug, and a water faucet.  Our  *)
+(* goal: to get TLC to solve the problem for us.                           *)
+(*                                                                         *)
+(* First, we write a spec that describes all allowable behaviors of our    *)
+(* heros.                                                                  *)
+(***************************************************************************)
+EXTENDS Integers
+  (*************************************************************************)
+  (* This statement imports the definitions of the ordinary operators on   *)
+  (* integers, such as +.                                                  *)
+  (*************************************************************************)
+
+CONSTANTS J1, J2, G
+=============================================================================
+</pre>
+<button class="btn" data-clipboard-target="#bar">
+    Copy Text
+</button>
+        </div>
+      </div>
+        <div style="float:left;width:20em;padding-left:3em">
+        Stop the video and copy this specification, either by
+        clicking on the button or by the usual way of copying
+        text.&nbsp;  If you
+          paste it into a model editor in the Toolbox, it will appear
+          in a normal size.&nbsp;  If you paste it into another text editor, 
+          you may have to 
+          increase the text's font size to make it readable.
+        </div>
+       </font> 
+    </div>
+-->
+<!--  HERE IS AN EXAMPLE OF OPENING A VIDEO IN A NEW WINDOW 
+    <div id="item2" style="position:relative;  top:1em;left:4em">
+         
+           <div style="text-align:left;width:30em">
+             <font style="font-size:19px;font-family:sans-serif">
+             <A href="summary-standalone.pdf" target=_blank>
+                <b>The TLA+ "Cheat Sheet"</b></font>
+             </A>
+           <p style="font-size:18px;font-family:sans-serif"> 
+            Left-click to open it in a new window, 
+               or right-click <br> and select 
+              &nbsp;<i>Save as ...</i>&nbsp;
+               to download it.
+           </p>
+           </div>
+
+  </div>
+-->
+  <!--**********************************************************************
+  * This is the end of the sequence of <div> items that are to be          *
+  * displayed at specified points in the video.                            *
+  ***********************************************************************-->
+</div>
+
+
+</body> 
+
+</html>
+

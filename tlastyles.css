@@ -1,0 +1,117 @@
+button.help {
+   /************************************************************************
+   * The help button.                                                      *
+   ************************************************************************/
+   background-color:#d0ffd0;
+   position: relative;
+   left:32px;
+  }
+
+button.speed{
+   /************************************************************************
+   * The Speed button.                                                     *
+   ************************************************************************/
+   background-color:#d0ffd0;
+   margin:0px 0px 0px 15px
+  }
+
+button.contentsButton{
+   /************************************************************************
+   * The Contents button.                                                  *
+   ************************************************************************/
+   margin:0px 0px 0px 32px;
+   background-color:#d0ffd0;
+  }
+
+button.leftSkip{
+  margin:-5px 0px 0px 0px;
+  background-color:#d0ffd0;
+}
+
+button.rightSkip{
+  margin:-5px 0px 0px 0px;
+  background-color:#d0ffd0;
+}
+
+
+label.skip {
+     font-size:15px;
+   font-family:Calibri,Trebuchet MS,Verdana,sans-serif;
+}
+
+li.contents { 
+   /************************************************************************
+   * Style for the <LI> items that list the table of contents entries.     *
+   ************************************************************************/
+   padding-left:.5em;
+   padding-bottom:.4em;
+   font-size:20px;
+   font-family:Calibri,Trebuchet MS,Verdana,sans-serif;
+ }
+
+ul.contents { 
+   /************************************************************************
+   * The <UL> item with class "contents" is used to list the table of      *
+   * contents entries.                                                     *
+   ************************************************************************/
+   list-style-type: none;
+   margin-top:   -1em ;
+   margin-left: -0.5em ;
+} 
+
+h1 {
+  /*************************************************************************
+  * The only H1 element displays the HEADING--the title of the video.      *
+  *************************************************************************/
+  font-size:30px;
+  font-family:Calibri,Trebuchet MS,Verdana,sans-serif;
+} 
+
+h3.contents { 
+   /************************************************************************
+   * The <H3> element with class "contents" displays the text              *
+   * "Contents".                                                           *
+   ************************************************************************/
+   margin-left: 1.0em ;
+   margin-top: .75em ;
+  font-size:25px;
+  font-family:Calibri,Trebuchet MS,Verdana,sans-serif;
+  }
+  
+body { 
+   /************************************************************************
+   * Style elements for the main body.                                     *
+   ************************************************************************/
+   background-color: #e4e4e4; <!-- #ffffe4; -->
+}
+
+pre.copyText {
+   /************************************************************************
+   * A <pre> element for tiny text to be copied.                           *
+   ************************************************************************/
+   font-size:2px; 
+  }
+
+pre.copyBigText {
+   /************************************************************************
+   * A <pre> element for tiny text to be copied.                           *
+   ************************************************************************/
+   font-size:8px; 
+  }
+
+a { 
+  font-family:Calibri,Trebuchet MS,Verdana,sans-serif;
+  font-style:oblique;
+}
+
+p.tall {
+ line-height: 200%;
+}
+
+textarea.invisible {
+  /*************************************************************************
+  * See the comments for the refocus() method in tlavideo.js.              *
+  *************************************************************************/
+  width:0px;
+  height:0px;
+}
